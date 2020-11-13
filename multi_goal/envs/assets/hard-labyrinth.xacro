@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="tomas-labyrinth">
+
+  <material name="wall_color">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+
+  <xacro:property name="wallLen" value="16" />
+  <xacro:macro name="make_wall" params="name length">
+    <link name="${name}">
+      <visual>
+        <geometry>
+          <box size="${length} 0.31 1.5"/>
+        </geometry>
+        <material name="wall_color"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${length} 0.31 1.5"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="0.5"/>
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="make_joint" params="parent child xyz rpy">
+    <joint name="${parent}-${child}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+  </xacro:macro>
+
+  <link name="base">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+  <xacro:make_wall name="bottom" length="${wallLen}"/>
+  <xacro:make_wall name="top" length="${wallLen}"/>
+  <xacro:make_wall name="left" length="${wallLen}"/>
+  <xacro:make_wall name="right" length="${wallLen}"/>
+  <xacro:make_wall name="horizontal" length="${wallLen*3/4}"/>
+  <xacro:make_wall name="vertical_top" length="${wallLen/3}"/>
+  <xacro:make_wall name="vertical_bottom" length="${wallLen/3}"/>
+  <xacro:make_wall name="vertical_left" length="${wallLen*2/3}"/>
+  <xacro:make_wall name="vertical_right" length="${wallLen*2/3}"/>
+
+  <xacro:make_joint parent="base" child="bottom" xyz="0 -${wallLen/2} 0" rpy="0 0 0" />
+  <xacro:make_joint parent="base" child="top" xyz="0 ${wallLen/2} 0" rpy="0 0 0" />
+  <xacro:make_joint parent="base" child="left" xyz="-${wallLen/2} 0 0" rpy="0 0 ${pi/2}" />
+  <xacro:make_joint parent="base" child="right" xyz="${wallLen/2} 0 0" rpy="0 0 ${pi/2}" />
+
+  <xacro:make_joint parent="base" child="horizontal" xyz="-${wallLen/8} 0 0" rpy="0 0 0" />
+  <xacro:make_joint parent="base" child="vertical_top" xyz="0 ${wallLen/3} 0" rpy="0 0 ${pi/2}" />
+  <xacro:make_joint parent="base" child="vertical_bottom" xyz="0 -${wallLen/3} 0" rpy="0 0 ${pi/2}" />
+  <xacro:make_joint parent="base" child="vertical_left" xyz="-${wallLen/4} 0 0" rpy="0 0 ${pi/2}" />
+  <xacro:make_joint parent="base" child="vertical_right" xyz="${wallLen/4} 0 0" rpy="0 0 ${pi/2}" />
+
+</robot>

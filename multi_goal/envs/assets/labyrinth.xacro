@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="tomas-labyrinth">
+
+  <material name="wall_color">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+
+  <xacro:macro name="make_wall" params="name length">
+    <link name="${name}">
+      <visual>
+        <geometry>
+          <box size="${length} 0.31 1.5"/>
+        </geometry>
+        <material name="wall_color"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${length} 0.31 1.5"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="0.5"/>
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="make_joint" params="parent child xyz rpy">
+    <joint name="${parent}-${child}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:make_wall name="left_wall" length="20"/>
+  <xacro:make_wall name="right_wall" length="20"/>
+  <xacro:make_wall name="north_wall" length="10" />
+  <xacro:make_wall name="south_wall" length="10" />
+  <xacro:make_wall name="middle_wall" length="16" />
+
+  <xacro:make_joint parent="left_wall" child="north_wall" xyz="10 5 0" rpy="0 0 ${pi/2}" />
+  <xacro:make_joint parent="left_wall" child="south_wall" xyz="-10 5 0" rpy="0 0 ${pi/2}" />
+  <xacro:make_joint parent="left_wall" child="middle_wall" xyz="-2 5 0" rpy="0 0 0" />
+  <xacro:make_joint parent="left_wall" child="right_wall" xyz="0 10 0" rpy="0 0 0" />
+
+</robot>

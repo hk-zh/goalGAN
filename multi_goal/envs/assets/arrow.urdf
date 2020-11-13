@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot name="myfirst">
+    <material name="Cyan">
+      <color rgba="0 0 1.0 1.0"/>
+    </material>
+  <link name="base">
+  </link>
+
+  <link name="shaft">
+    <visual>
+      <geometry>
+        <cylinder length="1" radius="0.05"/>
+      </geometry>
+      <material name="Cyan" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+
+  <joint name="base-shaft" type="fixed">
+    <parent link="base"/>
+    <child link="shaft"/>
+    <origin xyz="0.5 0 0" rpy="0 1.57079 0"/>
+  </joint>
+
+  <link name="tip">
+    <visual>
+      <geometry>
+        <sphere radius="0.1"/>
+      </geometry>
+      <material name="Cyan" />
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+
+  <joint name="shaft-tip" type="fixed">
+    <parent link="shaft"/>
+    <child link="tip"/>
+    <origin xyz="0 0 0.5"/>
+  </joint>
+</robot>
